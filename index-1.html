@@ -54,12 +54,13 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8p
 <div id="login">
 <div class="geo"><i></i><i></i><i></i><i></i></div><div class="moon"></div><div id="stars"></div>
 <svg class="mosque" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><g fill="#062a1f"><path d="M110 120V84Q200-14 290 84V120Z"/><path d="M40 120V90Q70 50 100 90V120Z"/><path d="M300 120V90Q330 50 360 90V120Z"/><rect x="14" y="40" width="14" height="80"/><path d="M12 40L21 12L30 40Z"/><rect x="372" y="40" width="14" height="80"/><path d="M370 40L379 12L388 40Z"/><rect x="0" y="108" width="400" height="12"/><path d="M196 10h8v-8h-8z"/></g><g fill="#f7e7a6"><circle class="lit" cx="200" cy="96" r="4"/><circle class="lit" cx="160" cy="100" r="3"/><circle class="lit" cx="240" cy="100" r="3"/><circle class="lit" cx="70" cy="100" r="3"/><circle class="lit" cx="330" cy="100" r="3"/></g></svg>
-<div id="lg"><p class="bis">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p><h2>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h2><div id="lt"></div><div id="ld"></div><div id="lf"></div><div style="font-size:.65rem;opacity:.5;margin-top:8px">সংস্করণ ৫</div></div>
+<div id="lg"><p class="bis">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p><h2>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h2><div id="lt"></div><div id="ld"></div><div id="lf"></div><div style="font-size:.65rem;opacity:.5;margin-top:8px">সংস্করণ ৭</div></div>
 </div>
 <header style="position:relative"><button onclick="tab='set';render()" title="সেটিং" style="position:absolute;right:8px;top:6px;background:none;border:0;color:#fff;font-size:1.2rem;opacity:.6">⚙</button><button onclick="logout()" title="লগআউট" style="position:absolute;left:8px;top:6px;background:none;border:0;color:#fff;font-size:1.1rem;opacity:.7">🔒</button>
 <h1>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h1>
 <p>কালুশাহ সড়ক, সৈয়দ রশিদিয়া মঞ্জিল, বরিশাল</p>
 <p>মোবাইল: ০১৭১১৩৪০২০৫</p>
+<p id="hd" style="font-size:.78rem"></p>
 </header>
 <nav id="nav"></nav>
 <div id="gh_st" class="note" style="text-align:center"></div>
@@ -165,7 +166,7 @@ function viewRep(){
  var u="document.getElementById('yr').innerHTML=yrHtml()";
  return '<div class="card"><b>ব্যক্তিগত রিপোর্ট</b><label>নাম বা আইডি নম্বর লিখে খুঁজুন</label><input value="'+esc(repQ)+'" placeholder="নাম / আইডি / মোবাইল" oninput="repQ=this.value;'+u+'"><div class="row"><div><label>কত তারিখ থেকে</label><input type="date" value="'+repF+'" onchange="repF=this.value;'+u+'"></div><div><label>কত তারিখ পর্যন্ত</label><input type="date" value="'+repT+'" onchange="repT=this.value;'+u+'"></div></div></div><div id="yr">'+yrHtml()+'</div><h3 style="margin:16px 0 8px">দৈনিক রিপোর্ট</h3>'+viewDay()}
 function viewSet(){var l=GH.t?location.origin+location.pathname+"#t="+encodeURIComponent(GH.t):"";
- return viewSet0()+(l?'<div class="card"><b>অন্য ডিভাইসে এক ক্লিকে সংযোগ</b><p class="note">নিচের লিংকটি শুধু বিশ্বস্ত শিক্ষকদের পাঠান। লিংক খুললেই ওই ডিভাইসে নিজে থেকে সংযুক্ত হবে, আলাদা করে কিছু লিখতে হবে না।</p><input readonly value="'+esc(l)+'" onclick="this.select()"></div>':"")+'<div class="card"><b>পাসওয়ার্ড পরিবর্তন</b><input id="np" type="password" placeholder="নতুন পাসওয়ার্ড"><p><button class="btn" onclick="changePw()">পরিবর্তন করুন</button></p></div>'}
+ return viewSet0()+(l?'<div class="card"><b>অন্য ডিভাইসে এক ক্লিকে সংযোগ</b><p class="note">নিচের লিংকটি শুধু বিশ্বস্ত শিক্ষকদের পাঠান। লিংক খুললেই ওই ডিভাইসে নিজে থেকে সংযুক্ত হবে, আলাদা করে কিছু লিখতে হবে না।</p><input readonly value="'+esc(l)+'" onclick="this.select()"></div>':"")+'<div class="card"><b>পাসওয়ার্ড পরিবর্তন</b><input id="np" type="password" placeholder="নতুন পাসওয়ার্ড"><p><button class="btn" onclick="changePw()">পরিবর্তন করুন</button></p></div>'+hoffCard()}
 function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){}}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}}
 async function sha(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("hajira|"+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
@@ -186,10 +187,10 @@ async function changePw(){var p=gv("np");if(p.length<4){alert("কমপক্�
 (function(){var h="";for(var i=0;i<45;i++)h+='<div class="star" style="left:'+Math.random()*100+'%;top:'+Math.random()*62+'%;animation-delay:'+Math.random()*3+'s"></div>';document.getElementById("stars").innerHTML=h;
  function tick(){var d=new Date(),o={day:"numeric",month:"long",year:"numeric"},g="",hj="";
   try{g=d.toLocaleDateString("bn-BD",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}catch(e){}
-  try{hj=new Intl.DateTimeFormat("bn-BD-u-ca-islamic-umalqura",o).format(d)}catch(e){}
+  try{var HM=["মুহাররম","সফর","রবিউল আউয়াল","রবিউস সানি","জুমাদাল ঊলা","জুমাদাস সানিয়া","রজব","শাবান","রমজান","শাওয়াল","জিলকদ","জিলহজ"],q={};new Intl.DateTimeFormat("en-u-ca-islamic-umalqura",{day:"numeric",month:"numeric",year:"numeric"}).formatToParts(d).forEach(function(x){q[x.type]=x.value});hj=bn(q.day)+" "+HM[+q.month-1]+", "+bn(q.year)+" হিজরি (আনুমানিক)"}catch(e){}
   document.getElementById("lt").textContent=bn(String(d.getHours()%12||12).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0"))+(d.getHours()>=12?" PM":" AM");
-  document.getElementById("ld").innerHTML=g+(hj?"<br>"+hj:"")}
- tick();setInterval(tick,1000)})();
+  document.getElementById("ld").innerHTML=calHtml(d);var hd=document.getElementById("hd");if(hd)hd.textContent=calHtml(d,1)}
+ setTimeout(tick,0);setInterval(tick,1000)})();
 var CY=String(new Date().getFullYear());
 function yrOpts(v){var o="";for(var y=2025;y<=+CY+2;y++)o+='<option value="'+y+'"'+(String(y)===String(v)?" selected":"")+'>'+bn(y)+'</option>';return o}
 function yrSel(v,fn){return '<select onchange="'+fn+'">'+yrOpts(v)+'</select>'}
@@ -203,6 +204,21 @@ function promote(){var nc=nextCls(),n=String(+selYr+1),c=0;if(!nc)return;
   if(DB.students.some(function(x){return x.sid===s.sid&&(x.yr||CY)===n}))return;
   DB.students.push({id:"s"+Date.now()+"_"+c,name:s.name,mobile:s.mobile,sid:s.sid,cls:nc,yr:n});c++});
  save();selCls=nc;selYr=n;alert(bn(c)+" জনকে নেওয়া হয়েছে");render()}
+var HJM=["মুহাররম","সফর","রবিউল আউয়াল","রবিউস সানি","জুমাদাল ঊলা","জুমাদাস সানিয়া","রজব","শাবান","রমজান","শাওয়াল","জিলকদ","জিলহজ"];
+var BNM=["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ","ভাদ্র","আশ্বিন","কার্তিক","অগ্রহায়ণ","পৌষ","মাঘ","ফাল্গুন","চৈত্র"],BNS=[[4,14],[5,15],[6,15],[7,16],[8,16],[9,16],[10,16],[11,15],[12,15],[1,14],[2,13],[3,15]];
+function banglaDate(d){var y=d.getFullYear(),t=Date.UTC(y,d.getMonth(),d.getDate()),bi=0,bt=0,by=0;
+ for(var yy=y-1;yy<=y;yy++)for(var i=0;i<12;i++){var yr=BNS[i][0]>=4?yy:yy+1,st=Date.UTC(yr,BNS[i][0]-1,BNS[i][1]);if(st<=t&&st>bt){bt=st;bi=i;by=yr}}
+ return bn(Math.round((t-bt)/864e5)+1)+" "+BNM[bi]+", "+bn(BNS[bi][0]>=4?by-593:by-594)+" বঙ্গাব্দ"}
+function hijriDate(d){var off=parseInt(ls("hajira_hoff")||"0",10)||0,q={};
+ new Intl.DateTimeFormat("en-u-ca-islamic-umalqura",{day:"numeric",month:"numeric",year:"numeric"}).formatToParts(new Date(d.getTime()+off*864e5)).forEach(function(x){q[x.type]=x.value});
+ return bn(q.day)+" "+HJM[+q.month-1]+", "+bn(q.year)+" হিজরি"}
+function calHtml(d,c){var e="",b="",h="";
+ try{e=d.toLocaleDateString("bn-BD",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}catch(x){}
+ try{b=banglaDate(d)}catch(x){}try{h=hijriDate(d)}catch(x){}
+ if(c)return [e,b,h].filter(Boolean).join(" • ");
+ return "ইংরেজি: "+e+"<br>বাংলা: "+b+"<br>আরবি: "+h}
+function hoffCard(){var o="";for(var i=-2;i<=2;i++)o+='<option value="'+i+'"'+(i===(parseInt(ls("hajira_hoff")||"0",10)||0)?" selected":"")+'>'+(i>0?"+":"")+bn(i)+'</option>';
+ return '<div class="card"><b>আরবি তারিখ সমন্বয় (দিন)</b><p class="note">বাংলাদেশে চাঁদ দেখা অনুযায়ী তারিখ আলাদা হলে এখানে কম-বেশি করুন, যেমন এক দিন পিছিয়ে থাকলে -১।</p><select onchange="ls(\'hajira_hoff\',this.value)">'+o+'</select></div>'}
 function render(){DB.students.forEach(function(s){if(!s.yr)s.yr=CY});nav();document.getElementById("app").innerHTML=tab==="att"?viewAtt():tab==="stu"?viewStu():tab==="rep"?viewRep():viewSet()}
 render();loginForm("লোড হচ্ছে...");ghPull().then(function(){loginForm()});
 </script>
