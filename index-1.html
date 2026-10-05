@@ -160,4 +160,43 @@ function viewRep(){
 function viewSet(){var l=GH.t?location.origin+location.pathname+"#t="+encodeURIComponent(GH.t):"";
  return viewSet0()+(l?'<div class="card"><b>অন্য ডিভাইসে এক ক্লিকে সংযোগ</b><p class="note">নিচের লিংকটি শুধু বিশ্বস্ত শিক্ষকদের পাঠান। লিংক খুললেই ওই ডিভাইসে নিজে থেকে সংযুক্ত হবে, আলাদা করে কিছু লিখতে হবে না।</p><input readonly value="'+esc(l)+'" onclick="this.select()"></div>':"")+'<div class="card"><b>পাসওয়ার্ড পরিবর্তন</b><input id="np" type="password" placeholder="নতুন পাসওয়ার্ড"><p><button class="btn" onclick="changePw()">পরিবর্তন করুন</button></p></div>'}
 function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){}}
-function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}}
+async function sha(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("hajira|"+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
+function curPw(){return DB.pw||ls("hajira_pw")||""}
+function loginForm(msg){var L=document.getElementById("login");if(ss("hajira_ok")==="1"){L.style.display="none";return}L.style.display="flex";
+ var f=document.getElementById("lf"),h=curPw();
+ if(msg){f.innerHTML='<p style="opacity:.85">'+msg+'</p>';return}
+ f.innerHTML='<b>'+(h?"পাসওয়ার্ড দিয়ে প্রবেশ করুন":"নতুন পাসওয়ার্ড তৈরি করুন")+'</b><input id="pw1" type="password" placeholder="পাসওয়ার্ড" onkeydown="if(event.key===\'Enter\')doLogin()">'+(h?"":'<input id="pw2" type="password" placeholder="পাসওয়ার্ড আবার লিখুন">')+'<button class="btn" onclick="doLogin()">প্রবেশ করুন</button><div id="le"></div>'}
+async function doLogin(){var h=curPw(),p=gv("pw1"),e=document.getElementById("le");
+ if(p.length<4){e.textContent="কমপক্ষে ৪ অক্ষরের পাসওয়ার্ড দিন";return}
+ var x=await sha(p);
+ if(!h){if(p!==gv("pw2")){e.textContent="দুটি পাসওয়ার্ড মিলছে না";return}DB.pw=x;ls("hajira_pw",x);save()}
+ else if(x!==h){e.textContent="ভুল পাসওয়ার্ড";return}
+ else ls("hajira_pw",x);
+ ss("hajira_ok","1");document.getElementById("login").style.display="none"}
+function logout(){ss("hajira_ok","0");loginForm()}
+async function changePw(){var p=gv("np");if(p.length<4){alert("কমপক্ষে ৪ অক্ষর দিন");return}DB.pw=await sha(p);ls("hajira_pw",DB.pw);save();alert("পাসওয়ার্ড পরিবর্তিত হয়েছে")}
+(function(){var h="";for(var i=0;i<45;i++)h+='<div class="star" style="left:'+Math.random()*100+'%;top:'+Math.random()*62+'%;animation-delay:'+Math.random()*3+'s"></div>';document.getElementById("stars").innerHTML=h;
+ function tick(){var d=new Date(),o={day:"numeric",month:"long",year:"numeric"},g="",hj="";
+  try{g=d.toLocaleDateString("bn-BD",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}catch(e){}
+  try{hj=new Intl.DateTimeFormat("bn-BD-u-ca-islamic-umalqura",o).format(d)}catch(e){}
+  document.getElementById("lt").textContent=bn(String(d.getHours()%12||12).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0"))+(d.getHours()>=12?" PM":" AM");
+  document.getElementById("ld").innerHTML=g+(hj?"<br>"+hj:"")}
+ tick();setInterval(tick,1000)})();
+var CY=String(new Date().getFullYear());
+function yrOpts(v){var o="";for(var y=2025;y<=+CY+2;y++)o+='<option value="'+y+'"'+(String(y)===String(v)?" selected":"")+'>'+bn(y)+'</option>';return o}
+function yrSel(v,fn){return '<select onchange="'+fn+'">'+yrOpts(v)+'</select>'}
+function promoHtml(){var i=CLASSES.indexOf(selCls);
+ if(i>=CLASSES.length-1)return '<p class="note">'+selCls+' শেষ শ্রেণী, তাই এর পরের শ্রেণী নেই।</p>';
+ return '<p style="margin:10px 0 0"><button class="btn" onclick="promote()">'+bn(selYr)+' এর '+selCls+'-এর সবাইকে '+bn(+selYr+1)+' সালে '+CLASSES[i+1]+'-এ উত্তীর্ণ করুন</button></p><p class="note">পুরোনো শিক্ষাবর্ষের তথ্য ও হাজিরা অক্ষত থাকবে।</p>'}
+function promote(){var i=CLASSES.indexOf(selCls),n=String(+selYr+1),c=0;
+ if(!confirm(bn(selYr)+" এর "+selCls+"-এর সবাইকে "+bn(n)+" সালে "+CLASSES[i+1]+"-এ উত্তীর্ণ করবেন?"))return;
+ DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}).forEach(function(s){
+  if(DB.students.some(function(x){return x.sid===s.sid&&(x.yr||CY)===n}))return;
+  DB.students.push({id:"s"+Date.now()+"_"+c,name:s.name,mobile:s.mobile,sid:s.sid,cls:CLASSES[i+1],yr:n});c++});
+ save();selCls=CLASSES[i+1];selYr=n;alert(bn(c)+" জনকে উত্তীর্ণ করা হয়েছে");render()}
+function render(){DB.students.forEach(function(s){if(!s.yr)s.yr=CY});nav();document.getElementById("app").innerHTML=tab==="att"?viewAtt():tab==="stu"?viewStu():tab==="rep"?viewRep():viewSet()}
+render();loginForm("লোড হচ্ছে...");ghPull().then(function(){loginForm()});
+</script>
+</body>
+</html>
