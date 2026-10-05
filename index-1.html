@@ -24,7 +24,7 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8p
 .btn{padding:10px 14px;border:0;border-radius:8px;background:var(--pr);color:#fff;font:inherit;font-weight:600;text-decoration:none;display:inline-block;text-align:center}
 .btn.wa{background:#1fa855}.btn.gr{background:var(--bd);color:var(--tx)}.btn.sm{padding:6px 10px;font-size:.85rem}
 .st{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:8px;background:var(--card)}
-.st.P{background:var(--pbg)}.st.A{background:var(--abbg)}
+.st.P{background:var(--pbg)}.st.A{background:var(--abbg)}.st.S{background:rgba(217,140,0,.16)}.st.L{background:rgba(47,123,214,.16)}.sum{font-size:.8rem}
 .info{flex:1 1 140px}.info b{display:block}.info small{color:var(--mu)}
 .sum{display:flex;gap:8px;text-align:center;margin-bottom:10px}.sum div{flex:1;padding:8px;border-radius:10px;background:var(--card);border:1px solid var(--bd)}
 .sum b{font-size:1.3rem;display:block}
@@ -54,7 +54,7 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8p
 <div id="login">
 <div class="geo"><i></i><i></i><i></i><i></i></div><div class="moon"></div><div id="stars"></div>
 <svg class="mosque" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><g fill="#062a1f"><path d="M110 120V84Q200-14 290 84V120Z"/><path d="M40 120V90Q70 50 100 90V120Z"/><path d="M300 120V90Q330 50 360 90V120Z"/><rect x="14" y="40" width="14" height="80"/><path d="M12 40L21 12L30 40Z"/><rect x="372" y="40" width="14" height="80"/><path d="M370 40L379 12L388 40Z"/><rect x="0" y="108" width="400" height="12"/><path d="M196 10h8v-8h-8z"/></g><g fill="#f7e7a6"><circle class="lit" cx="200" cy="96" r="4"/><circle class="lit" cx="160" cy="100" r="3"/><circle class="lit" cx="240" cy="100" r="3"/><circle class="lit" cx="70" cy="100" r="3"/><circle class="lit" cx="330" cy="100" r="3"/></g></svg>
-<div id="lg"><p class="bis">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p><h2>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h2><div id="lt"></div><div id="ld"></div><div id="lf"></div></div>
+<div id="lg"><p class="bis">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p><h2>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h2><div id="lt"></div><div id="ld"></div><div id="lf"></div><div style="font-size:.65rem;opacity:.5;margin-top:8px">সংস্করণ ৪</div></div>
 </div>
 <header style="position:relative"><button onclick="tab='set';render()" title="সেটিং" style="position:absolute;right:8px;top:6px;background:none;border:0;color:#fff;font-size:1.2rem;opacity:.6">⚙</button><button onclick="logout()" title="লগআউট" style="position:absolute;left:8px;top:6px;background:none;border:0;color:#fff;font-size:1.1rem;opacity:.7">🔒</button>
 <h1>হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা</h1>
@@ -64,6 +64,7 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8p
 <nav id="nav"></nav>
 <div id="gh_st" class="note" style="text-align:center"></div>
 <main id="app"></main>
+<script>window.onerror=function(m,u,l){var e=document.getElementById("lf");if(e)e.innerHTML='<p style="color:#ffb4a8;font-size:.8rem;word-break:break-all">ত্রুটি: '+m+' (লাইন '+l+')</p>'};</script>
 <script>
 var CLASSES=["প্লে","নার্সারি","প্রথম শ্রেণী","দ্বিতীয় শ্রেণী","তৃতীয় শ্রেণি"];
 var MADRASA="হিফজুল কুরআন রশিদিয়া হোসাইনিয়া নূরানী মাদ্রাসা";
@@ -83,6 +84,11 @@ function waLink(st,date){
  var msg="আসসালামু আলাইকুম। আপনার সন্তান "+st.name+" (আইডি: "+st.sid+", "+st.cls+") আজ "+dateBn(date)+" তারিখে মাদ্রাসায় অনুপস্থিত ছিল। অনুগ্রহ করে কারণ জানাবেন।\n— "+MADRASA+", "+PHONE;
  return "https://wa.me/"+waNum(st.mobile)+"?text="+encodeURIComponent(msg)}
 function rec(){return(DB.att[selDate+"|"+selCls]=DB.att[selDate+"|"+selCls]||{})}
+var ST={P:["উপস্থিত","var(--pr)"],A:["অনুপস্থিত","var(--ab)"],S:["অসুস্থ","#d98c00"],L:["ছুটি","#2f7bd6"]};
+var DL={A:"অনুপস্থিতির তারিখ",S:"অসুস্থতার তারিখ",L:"ছুটির তারিখ"};
+function byRoll(a,b){var x=parseInt(en(a.roll||""),10),y=parseInt(en(b.roll||""),10);if(isNaN(x))x=1e9;if(isNaN(y))y=1e9;return x-y||a.name.localeCompare(b.name,"bn")}
+function stCells(cn){return ["P","A","S","L"].map(function(k){return '<div>'+ST[k][0]+'<b style="color:'+ST[k][1]+'">'+bn(cn[k]||0)+'</b></div>'}).join("")}
+function stBtn(id,k,x){var on=x&&x.s===k;return '<button class="btn sm" style="flex:1;padding:6px 2px;background:'+(on?ST[k][1]:"var(--bd)")+';color:'+(on?"#fff":"var(--tx)")+'" onclick="mark(\''+id+'\',\''+k+'\')">'+ST[k][0]+'</button>'}
 function mark(id,v){var r=rec();if(r[id]&&r[id].s===v){delete r[id]}else{r[id]={s:v,t:nowT()}}save();render()}
 function setT(id,v){rec()[id].t=v;save()}
 function nav(){
@@ -90,17 +96,16 @@ function nav(){
  document.getElementById("nav").innerHTML=t.map(function(x){return '<button class="'+(tab===x[0]?"on":"")+'" onclick="tab=\''+x[0]+'\';render()">'+x[1]+'</button>'}).join("")}
 function clsSel(v,fn){return '<select onchange="'+fn+'">'+CLASSES.map(function(c){return '<option'+(c===v?" selected":"")+'>'+c+'</option>'}).join("")+'</select>'}
 function viewAtt(){
- var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}),r=rec();
- var p=0,a=0;list.forEach(function(s){if(r[s.id]){r[s.id].s==="P"?p++:a++}});
+ var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}).sort(byRoll),r=rec();
+ var cn={P:0,A:0,S:0,L:0};list.forEach(function(s){if(r[s.id])cn[r[s.id].s]++});
  var h='<div class="card"><div class="row"><div><label>শ্রেণী</label>'+clsSel(selCls,"selCls=this.value;render()")+'</div><div><label>শিক্ষাবর্ষ</label>'+yrSel(selYr,"selYr=this.value;render()")+'</div><div><label>তারিখ</label><input type="date" value="'+selDate+'" onchange="selDate=this.value||today();render()"></div></div></div>';
- h+='<div class="sum"><div>মোট<b>'+bn(list.length)+'</b></div><div>উপস্থিত<b style="color:var(--pr)">'+bn(p)+'</b></div><div>অনুপস্থিত<b style="color:var(--ab)">'+bn(a)+'</b></div></div>';
+ h+='<div class="sum"><div>মোট<b>'+bn(list.length)+'</b></div>'+stCells(cn)+'</div>';
  if(!list.length)return h+'<div class="empty">এই শ্রেণীতে কোনো ছাত্র-ছাত্রী নেই। "ছাত্র-ছাত্রী" ট্যাব থেকে যোগ করুন।</div>';
  list.forEach(function(s){
   var x=r[s.id];
-  h+='<div class="st '+(x?x.s:"")+'"><div class="info"><b>'+esc(s.name)+'</b><small>আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div>'+
-  '<button class="btn sm" style="background:'+(x&&x.s==="P"?"var(--pr)":"var(--bd)")+';color:'+(x&&x.s==="P"?"#fff":"var(--tx)")+'" onclick="mark(\''+s.id+'\',\'P\')">উপস্থিত</button>'+
-  '<button class="btn sm" style="background:'+(x&&x.s==="A"?"var(--ab)":"var(--bd)")+';color:'+(x&&x.s==="A"?"#fff":"var(--tx)")+'" onclick="mark(\''+s.id+'\',\'A\')">অনুপস্থিত</button>'+
-  (x?'<div style="flex:1 1 100%;display:flex;gap:8px;align-items:center"><span class="note">উপস্থিতি সময়:</span><input type="time" style="width:auto" value="'+x.t+'" onchange="setT(\''+s.id+'\',this.value)">'+
+  h+='<div class="st '+(x?x.s:"")+'"><div class="info"><b>'+esc(s.name)+'</b><small>'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div>'+
+  '<div style="flex:1 1 100%;display:flex;gap:6px">'+["P","A","S","L"].map(function(k){return stBtn(s.id,k,x)}).join("")+'</div>'+
+  (x&&(x.s==="P"||x.s==="A")?'<div style="flex:1 1 100%;display:flex;gap:8px;align-items:center"><span class="note">উপস্থিতি সময়:</span><input type="time" style="width:auto" value="'+x.t+'" onchange="setT(\''+s.id+'\',this.value)">'+
   (x.s==="A"?'<a class="btn wa sm" target="_blank" rel="noopener" href="'+waLink(s,selDate)+'">হোয়াটসঅ্যাপে জানান</a>':"")+'</div>':"")+'</div>'});
  return h}
 function viewStu(){
@@ -108,29 +113,30 @@ function viewStu(){
  var h='<div class="card"><b>'+(editId?"তথ্য সম্পাদনা":"নতুন ছাত্র-ছাত্রী যোগ করুন")+'</b>'+
  '<label>ছাত্র/ছাত্রীর নাম</label><input id="f_name" value="'+esc(e.name)+'">'+
  '<label>অভিভাবকের মোবাইল নাম্বার (হোয়াটসঅ্যাপ)</label><input id="f_mob" inputmode="tel" placeholder="01XXXXXXXXX" value="'+esc(e.mobile)+'">'+
- '<div class="row"><div><label>আইডি নম্বর</label><input id="f_sid" value="'+esc(e.sid)+'"></div><div><label>শ্রেণী</label><select id="f_cls">'+CLASSES.map(function(c){return '<option'+(c===e.cls?" selected":"")+'>'+c+'</option>'}).join("")+'</select></div></div>'+
+ '<div class="row"><div><label>আইডি নম্বর</label><input id="f_sid" value="'+esc(e.sid)+'"></div><div><label>ক্লাস রোল</label><input id="f_roll" inputmode="numeric" value="'+esc(e.roll||"")+'"></div></div><div class="row"><div style="display:none"></div><div><label>শ্রেণী</label><select id="f_cls">'+CLASSES.map(function(c){return '<option'+(c===e.cls?" selected":"")+'>'+c+'</option>'}).join("")+'</select></div></div>'+
  '<label>শিক্ষাবর্ষ</label><select id="f_yr">'+yrOpts(e.yr||selYr)+'</select><div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="saveStu()">সংরক্ষণ</button>'+(editId?'<button class="btn gr" onclick="editId=null;render()">বাতিল</button>':"")+'</div></div>';
  h+='<div class="card"><div class="row"><div><label style="margin-top:0">শ্রেণী অনুযায়ী তালিকা</label>'+clsSel(selCls,"selCls=this.value;render()")+'</div><div><label style="margin-top:0">শিক্ষাবর্ষ</label>'+yrSel(selYr,"selYr=this.value;render()")+'</div></div>'+promoHtml()+'</div>';
- var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr});
+ var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}).sort(byRoll);
  if(!list.length)h+='<div class="empty">কোনো ছাত্র-ছাত্রী নেই</div>';
- list.forEach(function(s){h+='<div class="st"><div class="info"><b>'+esc(s.name)+'</b><small>আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div><button class="btn gr sm" onclick="editId=\''+s.id+'\';render();scrollTo(0,0)">সম্পাদনা</button><button class="btn sm" style="background:var(--ab)" onclick="delStu(\''+s.id+'\')">মুছুন</button></div>'});
+ list.forEach(function(s){h+='<div class="st"><div class="info"><b>'+esc(s.name)+'</b><small>'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div><button class="btn gr sm" onclick="editId=\''+s.id+'\';render();scrollTo(0,0)">সম্পাদনা</button><button class="btn sm" style="background:var(--ab)" onclick="delStu(\''+s.id+'\')">মুছুন</button></div>'});
  return h}
 function saveStu(){
- var n=document.getElementById("f_name").value.trim(),m=document.getElementById("f_mob").value.trim(),i=document.getElementById("f_sid").value.trim(),c=document.getElementById("f_cls").value,y=document.getElementById("f_yr").value;
+ var n=document.getElementById("f_name").value.trim(),m=document.getElementById("f_mob").value.trim(),i=document.getElementById("f_sid").value.trim(),c=document.getElementById("f_cls").value,y=document.getElementById("f_yr").value,ro=document.getElementById("f_roll").value.trim();
  if(!n||!m||!i){alert("নাম, মোবাইল নাম্বার ও আইডি দিন");return}
  if(en(m).replace(/\D/g,"").length<10){alert("সঠিক মোবাইল নাম্বার দিন");return}
  if(DB.students.some(function(s){return s.sid===i&&s.id!==editId&&(s.yr||CY)===y})){alert("এই শিক্ষাবর্ষে এই আইডি আগেই ব্যবহৃত হয়েছে");return}
- if(editId){var s=DB.students.filter(function(x){return x.id===editId})[0];s.name=n;s.mobile=m;s.sid=i;s.cls=c;s.yr=y}
- else DB.students.push({id:"s"+Date.now(),name:n,mobile:m,sid:i,cls:c,yr:y});
+ if(ro&&DB.students.some(function(x){return x.id!==editId&&x.cls===c&&(x.yr||CY)===y&&en(x.roll||"")===en(ro)})){alert("এই শ্রেণী ও শিক্ষাবর্ষে এই রোল আগেই ব্যবহৃত হয়েছে");return}
+ if(editId){var s=DB.students.filter(function(x){return x.id===editId})[0];s.name=n;s.mobile=m;s.sid=i;s.cls=c;s.yr=y;s.roll=ro}
+ else DB.students.push({id:"s"+Date.now(),name:n,mobile:m,sid:i,cls:c,yr:y,roll:ro});
  selCls=c;selYr=y;editId=null;save();render()}
 function delStu(id){if(!confirm("মুছে ফেলবেন?"))return;DB.students=DB.students.filter(function(s){return s.id!==id});save();render()}
 function viewDay(){
  var h='<div class="card"><div class="row"><div><label>শ্রেণী</label>'+clsSel(selCls,"selCls=this.value;render()")+'</div><div><label>শিক্ষাবর্ষ</label>'+yrSel(selYr,"selYr=this.value;render()")+'</div><div><label>তারিখ</label><input type="date" value="'+selDate+'" onchange="selDate=this.value||today();render()"></div></div></div>';
- var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}),r=rec();
+ var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}).sort(byRoll),r=rec();
  h+='<div class="card"><b>'+selCls+' – '+dateBn(selDate)+'</b>';
  if(!list.length)return h+'<div class="empty">কোনো তথ্য নেই</div></div>';
- h+='<table style="width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px"><tr style="text-align:left;color:var(--mu)"><th>নাম</th><th>আইডি</th><th>অবস্থা</th><th>সময়</th></tr>';
- list.forEach(function(s){var x=r[s.id];h+='<tr style="border-top:1px solid var(--bd)"><td>'+esc(s.name)+'</td><td>'+esc(s.sid)+'</td><td style="color:'+(x?(x.s==="P"?"var(--pr)":"var(--ab)"):"var(--mu)")+'">'+(x?(x.s==="P"?"উপস্থিত":"অনুপস্থিত"):"নেওয়া হয়নি")+'</td><td>'+(x?t12(x.t):"-")+'</td></tr>'});
+ h+='<table style="width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px"><tr style="text-align:left;color:var(--mu)"><th>রোল</th><th>নাম</th><th>আইডি</th><th>অবস্থা</th><th>সময়</th></tr>';
+ list.forEach(function(s){var x=r[s.id];h+='<tr style="border-top:1px solid var(--bd)"><td>'+esc(s.roll||'-')+'</td><td>'+esc(s.name)+'</td><td>'+esc(s.sid)+'</td><td style="color:'+(x?ST[x.s][1]:"var(--mu)")+'">'+(x?ST[x.s][0]:"নেওয়া হয়নি")+'</td><td>'+(x&&(x.s==="P"||x.s==="A")?t12(x.t):"-")+'</td></tr>'});
  h+='</table><p style="margin-bottom:0"><button class="btn gr sm" onclick="window.print()">প্রিন্ট</button></p></div>';
  return h}
 // ===== একবার এখানে নিজের GitHub ইউজারনেম ও রিপোজিটরির নাম বসান =====
@@ -152,8 +158,8 @@ function ghSaveCfg(){GH={o:gv("g_o"),r:gv("g_r"),b:gv("g_b")||"main",p:gv("g_p")
 function viewSet0(){return '<div class="card"><b>GitHub সংযোগ (স্থায়ী সংরক্ষণ)</b><label>GitHub ইউজারনেম</label><input id="g_o" value="'+esc(GH.o||"")+'"><label>রিপোজিটরির নাম</label><input id="g_r" value="'+esc(GH.r||"")+'"><div class="row"><div><label>ব্রাঞ্চ</label><input id="g_b" value="'+esc(GH.b||"main")+'"></div><div><label>ডেটা ফাইল</label><input id="g_p" value="'+esc(GH.p||"data.json")+'"></div></div><label>Personal Access Token (Contents: Read and write)</label><input id="g_t" type="password" value="'+esc(GH.t||"")+'"><p class="note">টোকেন শুধু এই ডিভাইসের ব্রাউজারে থাকে। ছাত্র-ছাত্রীর তথ্য থাকায় রিপোজিটরি অবশ্যই Private রাখুন।</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="ghSaveCfg()">সংযুক্ত করুন</button><button class="btn gr" onclick="ghPull()">GitHub থেকে লোড</button><button class="btn gr" onclick="ghPush()">এখনই সংরক্ষণ</button></div></div>'}
 function yrHtml(){var q=repQ.trim().toLowerCase(),list=DB.students.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>-1||en(s.sid).toLowerCase().indexOf(en(q))>-1||en(s.mobile).indexOf(en(q))>-1});
  if(!list.length)return '<div class="empty">কাউকে পাওয়া যায়নি</div>';
- return list.map(function(s){var p=0,a=0,ad=[];Object.keys(DB.att).sort().forEach(function(k){var kd=k.split("|")[0];if(kd<repF||kd>repT)return;var x=DB.att[k][s.id];if(!x)return;if(x.s==="P")p++;else{a++;ad.push(dateBn(k.split("|")[0]))}});
- return '<div class="card"><b>'+esc(s.name)+'</b><div class="note">আইডি: '+esc(s.sid)+' • শিক্ষাবর্ষ '+bn(s.yr||CY)+' • '+esc(s.cls)+' • '+esc(s.mobile)+'</div><div class="sum" style="margin:8px 0 0"><div>উপস্থিত<b style="color:var(--pr)">'+bn(p)+'</b></div><div>অনুপস্থিত<b style="color:var(--ab)">'+bn(a)+'</b></div><div>মোট দিন<b>'+bn(p+a)+'</b></div></div>'+(a?'<div class="note" style="margin-top:6px">অনুপস্থিতির তারিখ: '+ad.join(", ")+'</div>':"")+'</div>'}).join("")}
+ return list.map(function(s){var cn={P:0,A:0,S:0,L:0},dl={A:[],S:[],L:[]};Object.keys(DB.att).sort().forEach(function(k){var kd=k.split("|")[0];if(kd<repF||kd>repT)return;var x=DB.att[k][s.id];if(!x)return;cn[x.s]++;if(dl[x.s])dl[x.s].push(dateBn(kd))});
+ return '<div class="card"><b>'+esc(s.name)+'</b><div class="note">'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • শিক্ষাবর্ষ '+bn(s.yr||CY)+' • '+esc(s.cls)+' • '+esc(s.mobile)+'</div><div class="sum" style="margin:8px 0 0">'+stCells(cn)+'<div>মোট দিন<b>'+bn(cn.P+cn.A+cn.S+cn.L)+'</b></div></div>'+["A","S","L"].map(function(k){return dl[k].length?'<div class="note" style="margin-top:6px">'+DL[k]+': '+dl[k].join(", ")+'</div>':""}).join("")+'</div>'}).join("")}
 function viewRep(){
  var u="document.getElementById('yr').innerHTML=yrHtml()";
  return '<div class="card"><b>ব্যক্তিগত রিপোর্ট</b><label>নাম বা আইডি নম্বর লিখে খুঁজুন</label><input value="'+esc(repQ)+'" placeholder="নাম / আইডি / মোবাইল" oninput="repQ=this.value;'+u+'"><div class="row"><div><label>কত তারিখ থেকে</label><input type="date" value="'+repF+'" onchange="repF=this.value;'+u+'"></div><div><label>কত তারিখ পর্যন্ত</label><input type="date" value="'+repT+'" onchange="repT=this.value;'+u+'"></div></div></div><div id="yr">'+yrHtml()+'</div><h3 style="margin:16px 0 8px">দৈনিক রিপোর্ট</h3>'+viewDay()}
