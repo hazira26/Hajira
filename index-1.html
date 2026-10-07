@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>হাজিরা অ্যাপ – রশিদিয়া নূরানী মাদ্রাসা</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f8f5;--card:#fff;--tx:#1b2a22;--mu:#5d6f65;--pr:#0f6b45;--bd:#d7e4dc;--ab:#c0392b;--abbg:#fdecea;--pbg:#e6f5ec}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a15;--card:#18251e;--tx:#e6f0ea;--mu:#9bb0a4;--pr:#3fbf86;--bd:#2a3d33;--ab:#ff7b6b;--abbg:#3a1f1c;--pbg:#183427}}
@@ -47,7 +52,8 @@ input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8p
 #lf input{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35);margin-top:8px}
 #lf input::placeholder{color:#ddd}#le{color:#ffb4a8;font-size:.85rem;min-height:1.2em;margin-top:6px}
 #lf .btn{background:#f7e7a6;color:#0a4232;margin-top:8px;width:100%}
-nav button{padding:10px 2px;font-size:.85rem}.sum{flex-wrap:wrap}.sum div{min-width:28%}
+nav button{padding:10px 2px;font-size:.85rem}#pv{display:none}#pv table{width:100%;border-collapse:collapse;margin:6px 0}#pv td,#pv th{border:1px solid #888;padding:4px 8px;text-align:left}.sum{flex-wrap:wrap}.sum div{min-width:28%}
+@media print{body>*:not(#pv){display:none!important}#pv{display:block!important;color:#000;background:#fff;padding:10px}body{background:#fff}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -66,6 +72,7 @@ nav button{padding:10px 2px;font-size:.85rem}.sum{flex-wrap:wrap}.sum div{min-wi
 <nav id="nav"></nav>
 <div id="gh_st" class="note" style="text-align:center"></div>
 <main id="app"></main>
+<div id="pv"></div>
 <script>window.onerror=function(m,u,l){var e=document.getElementById("lf");if(e)e.innerHTML='<p style="color:#ffb4a8;font-size:.8rem;word-break:break-all">ত্রুটি: '+m+' (লাইন '+l+')</p>'};</script>
 <script>
 var CLASSES=["প্লে","নার্সারি","প্রথম শ্রেণী","দ্বিতীয় শ্রেণী","তৃতীয় শ্রেণি"];
@@ -163,12 +170,12 @@ function viewSet0(){return '<div class="card"><b>GitHub সংযোগ (স্�
 function yrHtml(){var q=repQ.trim().toLowerCase(),list=DB.students.filter(function(s){return !q||s.name.toLowerCase().indexOf(q)>-1||en(s.sid).toLowerCase().indexOf(en(q))>-1||en(s.mobile).indexOf(en(q))>-1});
  if(!list.length)return '<div class="empty">কাউকে পাওয়া যায়নি</div>';
  return list.map(function(s){var cn={P:0,A:0,S:0,L:0},dl={A:[],S:[],L:[]};Object.keys(DB.att).sort().forEach(function(k){var kd=k.split("|")[0];if(kd<repF||kd>repT)return;var x=DB.att[k][s.id];if(!x)return;cn[x.s]++;if(dl[x.s])dl[x.s].push(dateBn(kd))});
- return '<div class="card"><b>'+esc(s.name)+'</b><div class="note">'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • শিক্ষাবর্ষ '+bn(s.yr||CY)+' • '+esc(s.cls)+' • '+esc(s.mobile)+'</div><div class="sum" style="margin:8px 0 0">'+stCells(cn)+'<div>মোট দিন<b>'+bn(cn.P+cn.A+cn.S+cn.L)+'</b></div></div>'+["A","S","L"].map(function(k){return dl[k].length?'<div class="note" style="margin-top:6px">'+DL[k]+': '+dl[k].join(", ")+'</div>':""}).join("")+'</div>'}).join("")}
+ return '<div class="card"><b>'+esc(s.name)+'</b><div class="note">'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • শিক্ষাবর্ষ '+bn(s.yr||CY)+' • '+esc(s.cls)+' • '+esc(s.mobile)+'</div><div class="sum" style="margin:8px 0 0">'+stCells(cn)+'<div>মোট দিন<b>'+bn(cn.P+cn.A+cn.S+cn.L)+'</b></div></div>'+["A","S","L"].map(function(k){return dl[k].length?'<div class="note" style="margin-top:6px">'+DL[k]+': '+dl[k].join(", ")+'</div>':""}).join("")+'<p style="margin:8px 0 0"><button class="btn sm" onclick="printStu(\''+s.id+'\')">প্রিন্ট করুন</button></p></div>'}).join("")}
 function viewRep(){
  var u="document.getElementById('yr').innerHTML=yrHtml()";
  return '<div class="card"><b>ব্যক্তিগত রিপোর্ট</b><label>নাম বা আইডি নম্বর লিখে খুঁজুন</label><input value="'+esc(repQ)+'" placeholder="নাম / আইডি / মোবাইল" oninput="repQ=this.value;'+u+'"><div class="row"><div><label>কত তারিখ থেকে</label><input type="date" value="'+repF+'" onchange="repF=this.value;'+u+'"></div><div><label>কত তারিখ পর্যন্ত</label><input type="date" value="'+repT+'" onchange="repT=this.value;'+u+'"></div></div></div><div id="yr">'+yrHtml()+'</div><h3 style="margin:16px 0 8px">দৈনিক রিপোর্ট</h3>'+viewDay()}
 function viewSet(){var l=GH.t?location.origin+location.pathname+"#t="+encodeURIComponent(GH.t):"";
- return viewSet0()+(l?'<div class="card"><b>অন্য ডিভাইসে এক ক্লিকে সংযোগ</b><p class="note">নিচের লিংকটি শুধু বিশ্বস্ত শিক্ষকদের পাঠান। লিংক খুললেই ওই ডিভাইসে নিজে থেকে সংযুক্ত হবে, আলাদা করে কিছু লিখতে হবে না।</p><input readonly value="'+esc(l)+'" onclick="this.select()"></div>':"")+'<div class="card"><b>পাসওয়ার্ড পরিবর্তন</b><input id="np" type="password" placeholder="নতুন পাসওয়ার্ড"><p><button class="btn" onclick="changePw()">পরিবর্তন করুন</button></p></div>'+hoffCard()}
+ return viewSet0()+(l?'<div class="card"><b>অন্য ডিভাইসে এক ক্লিকে সংযোগ</b><p class="note">নিচের লিংকটি শুধু বিশ্বস্ত শিক্ষকদের পাঠান। লিংক খুললেই ওই ডিভাইসে নিজে থেকে সংযুক্ত হবে, আলাদা করে কিছু লিখতে হবে না।</p><input readonly value="'+esc(l)+'" onclick="this.select()"></div>':"")+'<div class="card"><b>পাসওয়ার্ড পরিবর্তন</b><input id="np" type="password" placeholder="নতুন পাসওয়ার্ড"><p><button class="btn" onclick="changePw()">পরিবর্তন করুন</button></p></div>'+hoffCard()+fontCard()}
 function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){}}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}}
 async function sha(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("hajira|"+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
@@ -235,8 +242,20 @@ function viewSum(){
  h+='<div class="card"><b>'+dateBn(selDate)+' এর সারসংক্ষেপ</b><div class="sum" style="margin:8px 0"><div>মোট ছাত্র-ছাত্রী<b>'+bn(n)+'</b></div><div>হাজিরা নেওয়া হয়েছে<b>'+bn(done)+'</b></div><div>বাকি<b>'+bn(n-done)+'</b></div></div><div class="sum">'+stCells(tot)+'</div></div>';
  if(!n)return h+'<div class="empty">এই শিক্ষাবর্ষে কোনো ছাত্র-ছাত্রী নেই</div>';
  return h+'<div class="card"><b>শ্রেণী অনুযায়ী</b><table style="width:100%;border-collapse:collapse;font-size:.85rem;margin-top:8px"><tr style="text-align:left;color:var(--mu)"><th>শ্রেণী</th><th>মোট</th><th>উপস্থিত</th><th>অনুপস্থিত</th><th>অসুস্থ</th><th>ছুটি</th></tr>'+rows+'</table></div>'}
+function printStu(id){var s=DB.students.filter(function(x){return x.id===id})[0];if(!s)return;
+ var cn={P:0,A:0,S:0,L:0},rows="",i=0;
+ Object.keys(DB.att).sort().forEach(function(k){var kd=k.split("|")[0];if(kd<repF||kd>repT)return;var x=DB.att[k][s.id];if(!x)return;cn[x.s]++;i++;rows+='<tr><td>'+bn(i)+'</td><td>'+dateBn(kd)+'</td><td>'+ST[x.s][0]+'</td><td>'+((x.s==="P"||x.s==="A")&&x.t?t12(x.t):"-")+'</td></tr>'});
+ var h='<div style="text-align:center"><h2 style="margin:0">'+MADRASA+'</h2><div>কালুশাহ সড়ক, সৈয়দ রশিদিয়া মঞ্জিল, বরিশাল • মোবাইল: '+PHONE+'</div><h3 style="margin:10px 0">ব্যক্তিগত হাজিরা রিপোর্ট</h3></div>'+
+ '<table><tr><td>নাম</td><td>'+esc(s.name)+'</td><td>শ্রেণী</td><td>'+esc(s.cls)+'</td></tr><tr><td>রোল</td><td>'+esc(s.roll||"-")+'</td><td>আইডি</td><td>'+esc(s.sid)+'</td></tr><tr><td>শিক্ষাবর্ষ</td><td>'+bn(s.yr||CY)+'</td><td>মোবাইল</td><td>'+esc(s.mobile)+'</td></tr><tr><td>সময়কাল</td><td colspan="3">'+dateBn(repF)+' থেকে '+dateBn(repT)+' পর্যন্ত</td></tr></table>'+
+ '<h4>সারসংক্ষেপ</h4><table><tr><th>উপস্থিত</th><th>অনুপস্থিত</th><th>অসুস্থ</th><th>ছুটি</th><th>মোট দিন</th></tr><tr><td>'+bn(cn.P)+'</td><td>'+bn(cn.A)+'</td><td>'+bn(cn.S)+'</td><td>'+bn(cn.L)+'</td><td>'+bn(i)+'</td></tr></table>'+
+ '<h4>তারিখ অনুযায়ী</h4>'+(rows?'<table><tr><th>ক্রম</th><th>তারিখ</th><th>অবস্থা</th><th>সময়</th></tr>'+rows+'</table>':'<p>এই সময়ে কোনো হাজিরার তথ্য নেই।</p>')+
+ '<div style="display:flex;justify-content:space-between;margin-top:50px"><span>শ্রেণী শিক্ষকের স্বাক্ষর</span><span>প্রধান শিক্ষকের স্বাক্ষর</span></div><p style="font-size:.8rem">প্রিন্টের তারিখ: '+dateBn(today())+'</p>';
+ document.getElementById("pv").innerHTML=h;setTimeout(function(){window.print()},80)}
+function applyFont(){var f=ls("hajira_font");document.body.style.fontFamily=f?'"'+f+'","Noto Sans Bengali",system-ui,sans-serif':""}
+function fontCard(){var F=[["","ডিফল্ট"],["Hind Siliguri","হিন্দ শিলিগুড়ি"],["Noto Serif Bengali","নোটো সেরিফ বাংলা"],["Baloo Da 2","বালু দা"],["Anek Bangla","অনেক বাংলা"],["Tiro Bangla","তিরো বাংলা"]],c=ls("hajira_font")||"",o=F.map(function(x){return '<option value="'+x[0]+'"'+(x[0]===c?" selected":"")+'>'+x[1]+'</option>'}).join("");
+ return '<div class="card"><b>বাংলা ফন্ট</b><p class="note">ফন্ট লোড হতে ইন্টারনেট লাগে।</p><select onchange="ls(\'hajira_font\',this.value);applyFont()">'+o+'</select></div>'}
 function render(){DB.students.forEach(function(s){if(!s.yr)s.yr=CY});nav();document.getElementById("app").innerHTML=tab==="sum"?viewSum():tab==="att"?viewAtt():tab==="stu"?viewStu():tab==="rep"?viewRep():viewSet()}
-render();loginForm("লোড হচ্ছে...");ghPull().then(function(){loginForm()});
+applyFont();render();loginForm("লোড হচ্ছে...");ghPull().then(function(){loginForm()});
 </script>
 </body>
 </html>
