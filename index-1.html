@@ -121,7 +121,7 @@ function viewAtt(){
  return h}
 function viewStu(){
  var e=DB.students.filter(function(s){return s.id===editId})[0]||{name:"",mobile:"",sid:"",cls:selCls,yr:selYr};
- var h='<div class="card"><b>'+(editId?"তথ্য সম্পাদনা":"নতুন ছাত্র-ছাত্রী যোগ করুন")+'</b>'+
+ var h='<div class="card" id="stu_form"'+(editId?' style="border:2px solid var(--pr)"':"")+'><b>'+(editId?"সম্পাদনা করছেন: "+esc(e.name):"নতুন ছাত্র-ছাত্রী যোগ করুন")+'</b>'+
  '<label>ছাত্র/ছাত্রীর নাম</label><input id="f_name" value="'+esc(e.name)+'">'+
  '<label>অভিভাবকের মোবাইল নাম্বার (হোয়াটসঅ্যাপ)</label><input id="f_mob" inputmode="tel" placeholder="01XXXXXXXXX" value="'+esc(e.mobile)+'">'+
  '<div class="row"><div><label>আইডি নম্বর</label><input id="f_sid" value="'+esc(e.sid)+'"></div><div><label>ক্লাস রোল</label><input id="f_roll" inputmode="numeric" value="'+esc(e.roll||"")+'"></div></div><div class="row"><div style="display:none"></div><div><label>শ্রেণী</label><select id="f_cls">'+CLASSES.map(function(c){return '<option'+(c===e.cls?" selected":"")+'>'+c+'</option>'}).join("")+'</select></div></div>'+
@@ -129,7 +129,7 @@ function viewStu(){
  h+='<div class="card"><div class="row"><div><label style="margin-top:0">শ্রেণী অনুযায়ী তালিকা</label>'+clsSel(selCls,"selCls=this.value;render()")+'</div><div><label style="margin-top:0">শিক্ষাবর্ষ</label>'+yrSel(selYr,"selYr=this.value;render()")+'</div></div>'+promoHtml()+'</div>';
  var list=DB.students.filter(function(s){return s.cls===selCls&&(s.yr||CY)===selYr}).sort(byRoll);
  if(!list.length)h+='<div class="empty">কোনো ছাত্র-ছাত্রী নেই</div>';
- list.forEach(function(s){h+='<div class="st"><div class="info"><b>'+esc(s.name)+'</b><small>'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div><button class="btn gr sm" onclick="editId=\''+s.id+'\';render();scrollTo(0,0)">সম্পাদনা</button><button class="btn sm" style="background:var(--ab)" onclick="delStu(\''+s.id+'\')">মুছুন</button></div>'});
+ list.forEach(function(s){h+='<div class="st"><div class="info"><b>'+esc(s.name)+'</b><small>'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div><button class="btn gr sm" onclick="editStu(\''+s.id+'\')">সম্পাদনা</button><button class="btn sm" style="background:var(--ab)" onclick="delStu(\''+s.id+'\')">মুছুন</button></div>'});
  return h}
 function saveStu(){
  var n=document.getElementById("f_name").value.trim(),m=document.getElementById("f_mob").value.trim(),i=document.getElementById("f_sid").value.trim(),c=document.getElementById("f_cls").value,y=document.getElementById("f_yr").value,ro=document.getElementById("f_roll").value.trim();
@@ -254,6 +254,7 @@ function printStu(id){var s=DB.students.filter(function(x){return x.id===id})[0]
 function applyFont(){var f=ls("hajira_font");document.body.style.fontFamily=f?'"'+f+'","Noto Sans Bengali",system-ui,sans-serif':""}
 function fontCard(){var F=[["","ডিফল্ট"],["Hind Siliguri","হিন্দ শিলিগুড়ি"],["Noto Serif Bengali","নোটো সেরিফ বাংলা"],["Baloo Da 2","বালু দা"],["Anek Bangla","অনেক বাংলা"],["Tiro Bangla","তিরো বাংলা"]],c=ls("hajira_font")||"",o=F.map(function(x){return '<option value="'+x[0]+'"'+(x[0]===c?" selected":"")+'>'+x[1]+'</option>'}).join("");
  return '<div class="card"><b>বাংলা ফন্ট</b><p class="note">ফন্ট লোড হতে ইন্টারনেট লাগে।</p><select onchange="ls(\'hajira_font\',this.value);applyFont()">'+o+'</select></div>'}
+function editStu(id){editId=id;render();setTimeout(function(){var f=document.getElementById("stu_form");if(f&&f.scrollIntoView)f.scrollIntoView({behavior:"smooth",block:"start"});else window.scrollTo(0,0)},80)}
 function render(){DB.students.forEach(function(s){if(!s.yr)s.yr=CY});nav();document.getElementById("app").innerHTML=tab==="sum"?viewSum():tab==="att"?viewAtt():tab==="stu"?viewStu():tab==="rep"?viewRep():viewSet()}
 applyFont();render();loginForm("লোড হচ্ছে...");ghPull().then(function(){loginForm()});
 </script>
