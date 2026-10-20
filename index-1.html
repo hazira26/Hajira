@@ -117,8 +117,8 @@ function viewAtt(){
   var x=r[s.id];
   h+='<div class="st '+(x?x.s:"")+'"><div class="info"><b>'+esc(s.name)+'</b><small>'+(s.roll?'রোল: '+esc(s.roll)+' • ':'')+'আইডি: '+esc(s.sid)+' • '+esc(s.mobile)+'</small></div>'+
   '<div style="flex:1 1 100%;display:flex;gap:6px">'+["P","A","S","L"].map(function(k){return stBtn(s.id,k,x)}).join("")+'</div>'+
-  (x&&(x.s==="P"||x.s==="A")?'<div style="flex:1 1 100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="note">উপস্থিতি সময়:</span><input type="time" style="width:auto" value="'+x.t+'" onchange="setT(\''+s.id+'\',this.value)">'+
-  (x.s==="A"?'<a class="btn wa sm" target="_blank" rel="noopener" href="'+waLink(s,selDate)+'">হোয়াটসঅ্যাপে জানান</a><button class="btn sm" style="background:#0e8ae6" onclick="imoSend(\''+s.id+'\')">ইমোতে জানান</button>':"")+'</div>':"")+'</div>'});
+  (x&&x.s==="A"?'<div style="flex:1 1 100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+
+  ('<a class="btn wa sm" target="_blank" rel="noopener" href="'+waLink(s,selDate)+'">হোয়াটসঅ্যাপে জানান</a><button class="btn sm" style="background:#0e8ae6" onclick="imoSend(\''+s.id+'\')">ইমোতে জানান</button>')+'</div>':"")+'</div>'});
  return h}
 function viewStu(){
  var e=DB.students.filter(function(s){return s.id===editId})[0]||{name:"",mobile:"",sid:"",cls:selCls,yr:selYr};
